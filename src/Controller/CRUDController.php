@@ -937,7 +937,7 @@ class CRUDController extends AbstractController
      *
      * @throws \InvalidArgumentException
      */
-    final public function configureAdmin(Request $request): void
+    public function configureAdmin(Request $request): void
     {
         $adminFetcher = $this->container->get('sonata.admin.request.fetcher');
         \assert($adminFetcher instanceof AdminFetcherInterface);
@@ -962,7 +962,7 @@ class CRUDController extends AbstractController
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
      */
-    final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
+    protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
     {
         return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }
@@ -983,7 +983,7 @@ class CRUDController extends AbstractController
     /**
      * @param mixed[] $headers
      */
-    final protected function renderJson(mixed $data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
+    protected function renderJson(mixed $data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -993,7 +993,7 @@ class CRUDController extends AbstractController
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
-    final protected function isXmlHttpRequest(Request $request): bool
+    protected  function isXmlHttpRequest(Request $request): bool
     {
         return $request->isXmlHttpRequest()
             || $request->request->getBoolean('_xml_http_request')
@@ -1133,7 +1133,7 @@ class CRUDController extends AbstractController
     /**
      * Redirects the user to the list view.
      */
-    final protected function redirectToList(): RedirectResponse
+    protected  function redirectToList(): RedirectResponse
     {
         $parameters = [];
 
@@ -1148,7 +1148,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview is requested to be shown.
      */
-    final protected function isPreviewRequested(Request $request): bool
+    protected  function isPreviewRequested(Request $request): bool
     {
         return null !== $request->get('btn_preview');
     }
@@ -1156,7 +1156,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview has been approved.
      */
-    final protected function isPreviewApproved(Request $request): bool
+    protected  function isPreviewApproved(Request $request): bool
     {
         return null !== $request->get('btn_preview_approve');
     }
@@ -1167,7 +1167,7 @@ class CRUDController extends AbstractController
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      */
-    final protected function isInPreviewMode(Request $request): bool
+    protected  function isInPreviewMode(Request $request): bool
     {
         return $this->admin->supportsPreviewMode()
         && ($this->isPreviewRequested($request)
@@ -1178,7 +1178,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview has been declined.
      */
-    final protected function isPreviewDeclined(Request $request): bool
+    protected  function isPreviewDeclined(Request $request): bool
     {
         return null !== $request->get('btn_preview_decline');
     }
@@ -1239,7 +1239,7 @@ class CRUDController extends AbstractController
      *
      * @throws HttpException
      */
-    final protected function validateCsrfToken(Request $request, string $intention): void
+    protected  function validateCsrfToken(Request $request, string $intention): void
     {
         if (!$this->container->has('security.csrf.token_manager')) {
             return;
@@ -1257,7 +1257,7 @@ class CRUDController extends AbstractController
     /**
      * Escape string for html output.
      */
-    final protected function escapeHtml(string $s): string
+    protected  function escapeHtml(string $s): string
     {
         return htmlspecialchars($s, \ENT_QUOTES | \ENT_SUBSTITUTE);
     }
@@ -1265,7 +1265,7 @@ class CRUDController extends AbstractController
     /**
      * Get CSRF token.
      */
-    final protected function getCsrfToken(string $intention): ?string
+    protected  function getCsrfToken(string $intention): ?string
     {
         if (!$this->container->has('security.csrf.token_manager')) {
             return null;
@@ -1335,7 +1335,7 @@ class CRUDController extends AbstractController
      *
      * @param mixed[] $parameters
      */
-    final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
+    protected  function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         $domain ??= $this->admin->getTranslationDomain();
         $translator = $this->container->get('translator');
@@ -1375,7 +1375,7 @@ class CRUDController extends AbstractController
     /**
      * @phpstan-return T|null
      */
-    final protected function assertObjectExists(Request $request, bool $strict = false): ?object
+    protected  function assertObjectExists(Request $request, bool $strict = false): ?object
     {
         $admin = $this->admin;
         $object = null;
@@ -1411,7 +1411,7 @@ class CRUDController extends AbstractController
     /**
      * @return array{_tab?: string}
      */
-    final protected function getSelectedTab(Request $request): array
+    protected  function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => (string) $request->request->get('_tab')]);
     }
@@ -1421,7 +1421,7 @@ class CRUDController extends AbstractController
      *
      * @param string[]|null $theme
      */
-    final protected function setFormTheme(FormView $formView, ?array $theme = null): void
+    protected  function setFormTheme(FormView $formView, ?array $theme = null): void
     {
         $twig = $this->container->get('twig');
         \assert($twig instanceof Environment);
@@ -1433,7 +1433,7 @@ class CRUDController extends AbstractController
     /**
      * @phpstan-param T $object
      */
-    final protected function checkParentChildAssociation(Request $request, object $object): void
+    protected  function checkParentChildAssociation(Request $request, object $object): void
     {
         if (!$this->admin->isChild()) {
             return;
